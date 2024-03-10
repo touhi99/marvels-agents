@@ -18,7 +18,22 @@ def get_character_data(data_file, char: str) -> dict:
     # Return None or an empty dict if the character is not found
     return None
 
+@tool
+def get_top_characters_by_attribute(attribute: str, top_n: int = 10) -> list:
+    """Returns the top N characters sorted by a given attribute."""
+    with open('tmp/roster.json') as f:
+        data = json.load(f)
+
+    # Ensure the characters are sorted by the specified attribute in descending order
+    sorted_characters = sorted(data["data"], key=lambda x: x.get(attribute, 0), reverse=True)
+
+    # Return the top N characters
+    return sorted_characters[:top_n]
+
+# Example usage to get the top 5 characters by power
+#top_characters_by_power = get_top_characters_by_attribute('power', 5)
+
 #get_character_data.invoke("SpiderMan")
 def get_tools():
-    tools = [get_character_data]
+    tools = [get_character_data, get_top_characters_by_attribute]
     return tools
