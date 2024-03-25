@@ -4,3 +4,8 @@ openai
 streamlit
 langchain-groq
 langchain-community
+streamlit_chat
+langchain_openai
+rapidfuzz
+requests
+beautifulsoup4
