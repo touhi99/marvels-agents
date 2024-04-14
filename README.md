@@ -32,3 +32,4 @@ A sample visualization of the current Knowledge graph with the fetched data
 - Integrate other Cypher queries into tools
 - Extended API search
 - web crawl (optional) -> future feature
+- Simulate gamev -> future feature

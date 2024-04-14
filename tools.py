@@ -66,7 +66,15 @@ def get_ability_desc_of_char(character:str, keyword:str) -> list:
         print(ability)
         abilities.append(ability)
     return abilities
-        
+
+@tool
+def get_ability_cost_of_char(character:str, abilities:list) -> list:
+    """Given character name and list of available abilities [basic, ultimate, special, passive],\
+    return how much start and cost energy for the abilities"""
+    character = character.title()
+    energy_details = db_manager.get_ability_energy(character, abilities)
+    return energy_details
+
 def get_tools():
     tools = [
         # Tool(
@@ -83,12 +91,12 @@ def get_tools():
         get_common_traits,
         get_related_char,
         get_ability_desc_of_char,
+        get_ability_cost_of_char,
         Tool(
             name="Graph",
             func=get_cypher_chain().run,
             description="""Useful when you need to answer questions about MSF character information  ie, speed, power, iso, trait etc. \
-            which are not already pre-defined tools.
-            """,
+            which are not already pre-defined tools.""",
         ),
     ]    
     return tools

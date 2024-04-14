@@ -100,6 +100,22 @@ class GraphDBManager:
         results = self.run_query(query, parameters)
         return results  # This will return a list of records with the matrix, active type, and minimum stat value
 
+    def get_ability_energy(self, character_name, abilities):
+        """
+        Given a character name and a list of ability types (e.g., ['basic', 'special', 'ultimate']),
+        this function fetches the start and cost energy values for these abilities.
+        """
+        query = """
+        MATCH (c:Character {name: $character_name})-[:HAS_ABILITY]->(a:AbilityKit)
+        WHERE a.type IN $abilities
+        RETURN a.type AS AbilityType, a.name AS AbilityName, 
+            a.startEnergy AS StartEnergy, a.costEnergy AS CostEnergy
+        """
+        parameters = {
+            'character_name': character_name,
+            'abilities': abilities
+        }
+        return self.run_query(query, parameters)
 
 
 def build_characters_kg(graph_db, character_data):
@@ -122,11 +138,16 @@ def build_characters_kg(graph_db, character_data):
                     )
                     if max_level_key:
                         last_level_description = clean_html(levels[max_level_key]["description"])
-                        ability_kits[kit_type] = {
+                        ability_details = {
                             "type": kit_type,
                             "name": kit_data["name"],
                             "description": last_level_description
                         }
+                        # Add energy cost details for special and ultimate abilities
+                        if kit_type in ['special', 'ultimate']:
+                            ability_details['startEnergy'] = levels[max_level_key].get('startEnergy', 'Unknown')
+                            ability_details['costEnergy'] = levels[max_level_key].get('costEnergy', 'Unknown')
+                        ability_kits[kit_type] = ability_details
 
         graph_db.run_query("""
             MERGE (c:Character {id: $id})
@@ -139,8 +160,12 @@ def build_characters_kg(graph_db, character_data):
             WITH c, t
             UNWIND $ability_kits as kit
             MERGE (a:AbilityKit {characterId: $id, type: kit.type})
-            ON CREATE SET a.name = kit.name, a.description = kit.description
-            ON MATCH SET a.name = kit.name, a.description = kit.description
+            ON CREATE SET a.name = kit.name, a.description = kit.description,
+                           a.startEnergy = COALESCE(kit.startEnergy, 0),
+                           a.costEnergy = COALESCE(kit.costEnergy, 0)
+            ON MATCH SET a.name = kit.name, a.description = kit.description,
+                           a.startEnergy = COALESCE(kit.startEnergy, 0),
+                           a.costEnergy = COALESCE(kit.costEnergy, 0)
             MERGE (c)-[:HAS_ABILITY]->(a)
         """, parameters={
             "id": char['id'],
