@@ -21,6 +21,11 @@ Requires python >= 3.11, Neo4J credentials, OpenAI API key and MSF account.
 - Authenticate first time and paste the redirected URL on the small text input
 - Once data loading completed, start querying!
 
+### KG Visualization
+
+A sample visualization of the current Knowledge graph with the fetched data
+![Knowledge Graph](img/visualisation.png "")
+
 ### TODO:
 - RAG on descriptive data
 - More guided usecases on streamlit
