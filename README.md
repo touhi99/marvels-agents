@@ -2,6 +2,7 @@
 
 LLM + Agents + Langchain + MSF API + Neo4J KB + Streamlit - A hobby project with the learning of LLM Agents with a Knowledge graph.
 
+- Neo4J Agent and query in LLM more examples [Neo4j](https://neo4j.com/developer-blog/knowledge-graph-rag-application/)
 - Requires a Marvel Strike Force Web account to authenticate
 - A Neo4J Knowledge graph connection to store the data.
 
