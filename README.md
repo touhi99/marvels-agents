@@ -1,10 +1,9 @@
 ## MSF-Agents
 
-LLM + Agents + Langchain + MSF API + Neo4J KB + Streamlit
-A hobby project with the learning of LLM Agents with a Knowledge graph.
+LLM + Agents + Langchain + MSF API + Neo4J KB + Streamlit - A hobby project with the learning of LLM Agents with a Knowledge graph.
 
-Requires a Marvel Strike Force Web account to authenticate
-A Neo4J Knowledge graph connection to store the data.
+- Requires a Marvel Strike Force Web account to authenticate
+- A Neo4J Knowledge graph connection to store the data.
 
 ### Installation
 
