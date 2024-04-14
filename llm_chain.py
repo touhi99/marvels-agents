@@ -4,7 +4,9 @@ import os
 from etl import load_graph
 
 def load_llm(temperature=0.1):
-    llm = ChatOpenAI(model_name="gpt-4-0125-preview", openai_api_key=os.environ["OPENAI_API_KEY"], temperature=temperature)
+    #gpt-4-turbo 
+    #gpt-4-0125-preview
+    llm = ChatOpenAI(model_name="gpt-4-turbo", openai_api_key=os.environ["OPENAI_API_KEY"], temperature=temperature)
     return llm
 
 def get_cypher_chain():

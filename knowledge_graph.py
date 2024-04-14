@@ -1,6 +1,6 @@
 #neo4j
 from neo4j import GraphDatabase
-import re
+from util import clean_html
 
 class GraphDBManager:
     def __init__(self, uri, user, password):
@@ -24,14 +24,13 @@ class GraphDBManager:
 
 
     def common_traits_among_high_level_characters(self, limit=10):
-        #get most trait 
         query = """
         MATCH (c:Character)-[:HAS_TRAIT]->(t:Trait)
         WHERE c.level > 50
         WITH t, COUNT(c) AS NumCharacters
-        RETURN t.name AS Trait, NumCharacters ORDER BY NumCharacters DESC LIMIT {limit}
+        RETURN t.name AS Trait, NumCharacters ORDER BY NumCharacters DESC LIMIT $limit
         """
-        return self.run_query(query)
+        return self.run_query(query, parameters={'limit': limit})
 
     def find_characters_by_trait(self, trait):
         #Get all the characters given a trait name
@@ -101,10 +100,7 @@ class GraphDBManager:
         results = self.run_query(query, parameters)
         return results  # This will return a list of records with the matrix, active type, and minimum stat value
 
-def clean_html(raw_html):
-    """Utility function to remove HTML tags from descriptions."""
-    clean_text = re.sub(r'<.*?>', '', raw_html)
-    return clean_text
+
 
 def build_characters_kg(graph_db, character_data):
     for char in character_data:
