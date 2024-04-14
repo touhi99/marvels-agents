@@ -5,6 +5,7 @@ from knowledge_graph import GraphDBManager
 
 db_manager = GraphDBManager(os.getenv('uri'), os.getenv('username'), os.getenv('password'))
 
+
 @tool
 def get_iso_tools(character: str):
     """Given a chacaracter name, gets their ISO values"""

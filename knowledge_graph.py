@@ -32,6 +32,7 @@ class GraphDBManager:
         """
         return self.run_query(query, parameters={'limit': limit})
 
+    
     def find_characters_by_trait(self, trait):
         #Get all the characters given a trait name
         query = """
@@ -40,6 +41,19 @@ class GraphDBManager:
         """
         parameters = {'trait_name': trait}
         return self.run_query(query, parameters)
+    
+    def find_characters_by_trait_fuzzy(self, trait):
+        """
+        Get all the characters with a trait name similar to the given trait using fuzzy matching.
+        """
+        query = """
+        MATCH (c:Character)-[:HAS_TRAIT]->(t:Trait)
+        WHERE apoc.text.jaroWinklerSimilarity(t.name, $trait_name) > 0.8
+        RETURN c.name AS CharacterName, c.id AS CharacterID
+        """
+        parameters = {'trait_name': trait}
+        return self.run_query(query, parameters)
+
 
     def find_characters_by_attribute(self, attribute, top=True, limit=15):
         # find list of characters given attribute name
