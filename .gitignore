@@ -6,3 +6,4 @@ data/*
 notebooks/*
 tmp/*
 __pycache__/*
+.vscode/*

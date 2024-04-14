@@ -9,3 +9,4 @@ langchain_openai
 rapidfuzz
 requests
 beautifulsoup4
+neo4j
